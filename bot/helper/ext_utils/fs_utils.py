@@ -97,8 +97,7 @@ def get_path_size(path: str):
     return total_size
 
 def get_base_name(orig_path: str):
-    ext = [ext for ext in ARCH_EXT if orig_path.lower().endswith(ext)]
-    if ext:
+    if ext := [ext for ext in ARCH_EXT if orig_path.lower().endswith(ext)]:
         ext = ext[0]
         return re_split(f'{ext}$', orig_path, maxsplit=1, flags=I)[0]
     else:
@@ -223,8 +222,7 @@ def get_media_info(path):
 
     duration = round(float(fields.get('duration', 0)))
 
-    fields = fields.get('tags')
-    if fields:
+    if fields := fields.get('tags'):
         artist = fields.get('artist')
         if artist is None:
             artist = fields.get('ARTIST')

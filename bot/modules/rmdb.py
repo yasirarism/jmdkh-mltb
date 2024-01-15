@@ -19,8 +19,7 @@ def _rmdb(message, bot):
     except IndexError:
         link = ''
     tag = None
-    reply_to = message.reply_to_message
-    if reply_to:
+    if reply_to := message.reply_to_message:
         media_array = [reply_to.document, reply_to.video, reply_to.audio]
         file = next((i for i in media_array if i), None)
         if not reply_to.from_user.is_bot:
@@ -48,8 +47,7 @@ def _rmdb(message, bot):
 
     if DATABASE_URL and config_dict['STOP_DUPLICATE_TASKS']:
         raw_url = extract_link(link, tfile)
-        exist = DbManger().check_download(raw_url)
-        if exist:
+        if exist := DbManger().check_download(raw_url):
             DbManger().remove_download(exist['_id'])
             msg = 'Download is removed from database successfully'
             msg += f'\n{exist["tag"]} Your download is removed.'

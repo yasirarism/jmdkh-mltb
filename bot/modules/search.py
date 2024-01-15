@@ -23,8 +23,7 @@ def initiate_search_tools():
         globals()['PLUGINS'] = []
         src_plugins = jsonloads(SEARCH_PLUGINS)
         qbclient = get_client()
-        qb_plugins = qbclient.search_plugins()
-        if qb_plugins:
+        if qb_plugins := qbclient.search_plugins():
             for plugin in qb_plugins:
                 qbclient.search_uninstall_plugin(names=plugin['name'])
         qbclient.search_install_plugin(src_plugins)

@@ -62,8 +62,7 @@ def _clone(message, bot):
         return
     if DATABASE_URL and config_dict['STOP_DUPLICATE_TASKS']:
         raw_url = extract_link(link)
-        exist = DbManger().check_download(raw_url)
-        if exist:
+        if exist := DbManger().check_download(raw_url):
             _msg = f'<b>Download is already added by {exist["tag"]}</b>\n\nCheck the download status in @{exist["botname"]}\n\n<b>Link</b>: <code>{exist["_id"]}</code>'
             delete_links(bot, message)
             return sendMessage(_msg, bot, message)
@@ -129,8 +128,7 @@ def start_clone(listner):
             msg = "File/Folder is already available in Drive.\nHere are the search results:"
             delete_links(bot, message)
             return sendMarkup(msg, bot, message, button)
-    CLONE_LIMIT = config_dict['CLONE_LIMIT']
-    if CLONE_LIMIT:
+    if CLONE_LIMIT := config_dict['CLONE_LIMIT']:
         limit = CLONE_LIMIT * 1024**3
         if size > limit:
             msg2 = f'Failed, Clone limit is {get_readable_file_size(limit)}.\nYour File/Folder size is {get_readable_file_size(size)}.'

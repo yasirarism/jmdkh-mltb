@@ -85,8 +85,7 @@ class TelegramDownloadHelper:
 
     def add_download(self, message, path, filename):
         _dmsg = app.get_messages(message.chat.id, reply_to_message_ids=message.message_id)
-        media = _dmsg.document or _dmsg.video or _dmsg.audio or None
-        if media:
+        if media := _dmsg.document or _dmsg.video or _dmsg.audio or None:
             with global_lock:
                 # For avoiding locking the thread lock for long time unnecessarily
                 download = media.file_unique_id not in GLOBAL_GID

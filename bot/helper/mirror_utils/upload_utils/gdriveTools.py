@@ -195,8 +195,7 @@ class GoogleDriveHelper:
                 msg = "No such file exist"
             elif "insufficientFilePermissions" in str(err):
                 msg = "Insufficient File Permissions"
-                token_service = self.__alt_authorize()
-                if token_service:
+                if token_service := self.__alt_authorize():
                     self.__service = token_service
                     return self.deletefile(link)
             else:
@@ -387,8 +386,7 @@ class GoogleDriveHelper:
                 if not config_dict['DISABLE_DRIVE_LINK']:
                     durl = short_url(durl)
                     buttons.buildbutton("🔐 Drive Link", durl)
-                INDEX_URL = CATEGORY_INDEXS[c_index]
-                if INDEX_URL:
+                if INDEX_URL := CATEGORY_INDEXS[c_index]:
                     url_path = rquote(f'{meta.get("name")}', safe='')
                     url = f'{INDEX_URL}/{url_path}/'
                     url = short_url(url)
@@ -408,8 +406,7 @@ class GoogleDriveHelper:
                     buttons.buildbutton("🔐 Drive Link", durl)
                 msg += f'\n\n<b>Size</b>: {get_readable_file_size(int(meta.get("size", 0)))}'
                 msg += f'\n\n<b>Type</b>: {mime_type}'
-                INDEX_URL = CATEGORY_INDEXS[c_index]
-                if INDEX_URL:
+                if INDEX_URL := CATEGORY_INDEXS[c_index]:
                     url_path = rquote(f'{file.get("name")}', safe='')
                     url = f'{INDEX_URL}/{url_path}'
                     url = short_url(url)
@@ -426,8 +423,7 @@ class GoogleDriveHelper:
             if "User rate limit exceeded" in err:
                 msg = "User rate limit exceeded."
             elif "File not found" in err:
-                token_service = self.__alt_authorize()
-                if token_service:
+                if token_service := self.__alt_authorize():
                     self.__service = token_service
                     return self.clone(link)
                 msg = "File not found."
@@ -559,8 +555,7 @@ class GoogleDriveHelper:
         telegraph_content = []
         Title = False
         if len(DRIVES_IDS) > 1:
-            token_service = self.__alt_authorize()
-            if token_service:
+            if token_service := self.__alt_authorize():
                 self.__service = token_service
         for drive_name, dir_id, index_url in zip(DRIVES_NAMES, DRIVES_IDS, INDEX_URLS):
             isRecur = False if isRecursive and len(dir_id) > 23 else isRecursive
@@ -596,10 +591,10 @@ class GoogleDriveHelper:
                     furl = short_url(f"https://drive.google.com/drive/folders/{file.get('id')}")
                     if SHORTENERES:
                         msg += f"⁍<a href='{furl}'>{file.get('name').replace(' ', '-').replace('.', ',')}" \
-                               f"</a> (shortcut)"
+                                   f"</a> (shortcut)"
                     else:
                         msg += f"⁍<a href='{furl}'>{file.get('name')}" \
-                               f"</a> (shortcut)"
+                                   f"</a> (shortcut)"
                 else:
                     furl = short_url(f"https://drive.google.com/uc?id={file.get('id')}&export=download")
                     if SHORTENERES:
@@ -677,8 +672,7 @@ class GoogleDriveHelper:
                 err = err.last_attempt.exception()
             err = str(err).replace('>', '').replace('<', '')
             if "File not found" in err:
-                token_service = self.__alt_authorize()
-                if token_service:
+                if token_service := self.__alt_authorize():
                     self.__service = token_service
                     return self.count(link)
                 msg = "File not found."
@@ -695,8 +689,7 @@ class GoogleDriveHelper:
         if len(files) == 0:
             return
         for filee in files:
-            shortcut_details = filee.get('shortcutDetails')
-            if shortcut_details:
+            if shortcut_details := filee.get('shortcutDetails'):
                 mime_type = shortcut_details['targetMimeType']
                 file_id = shortcut_details['targetId']
                 filee = self.__getFileMetadata(file_id)
@@ -733,8 +726,7 @@ class GoogleDriveHelper:
                 err = err.last_attempt.exception()
             err = str(err).replace('>', '').replace('<', '')
             if "File not found" in err:
-                token_service = self.__alt_authorize()
-                if token_service:
+                if token_service := self.__alt_authorize():
                     self.__service = token_service
                     return self.helper(link)
                 msg = "File not found."
@@ -762,8 +754,7 @@ class GoogleDriveHelper:
             if "downloadQuotaExceeded" in err:
                 err = "Download Quota Exceeded."
             elif "File not found" in err:
-                token_service = self.__alt_authorize()
-                if token_service:
+                if token_service := self.__alt_authorize():
                     self.__service = token_service
                     self.__updater.cancel()
                     return self.download(link)
@@ -787,8 +778,7 @@ class GoogleDriveHelper:
         for item in result:
             file_id = item['id']
             filename = item['name']
-            shortcut_details = item.get('shortcutDetails')
-            if shortcut_details:
+            if shortcut_details := item.get('shortcutDetails'):
                 file_id = shortcut_details['targetId']
                 mime_type = shortcut_details['targetMimeType']
             else:

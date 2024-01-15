@@ -18,8 +18,7 @@ from bot.helper.telegram_helper.message_utils import (editMessage, sendMarkup,
 
 def cancel_mirror(update, context):
     user_id = update.message.from_user.id
-    text = update.message.text
-    if text:
+    if text := update.message.text:
         try:
             gid = re_findall(rf'\/cancel{CMD_PERFIX}_(\w*)', text)[0]
             dl = getDownloadByGid(gid)
@@ -27,8 +26,7 @@ def cancel_mirror(update, context):
                 sendMessage(f"GID: <code>{gid}</code> Not Found.", context.bot, update.message)
                 return
         except:
-            reply_to = update.message.reply_to_message
-            if reply_to:
+            if reply_to := update.message.reply_to_message:
                 with download_dict_lock:
                     dl = download_dict.get(reply_to.message_id)
                 if not dl:
